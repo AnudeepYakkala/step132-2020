@@ -22,12 +22,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Arrays;
+import com.google.gson.Gson;
 
 /** Test servlet that returns a list of books for a searched topic. */
 @WebServlet("/books")
-public class SearchServlet extends HttpServlet {
+public class BookServlet extends HttpServlet {
 
-    private static ArrayList<Book> books = new ArrayList<Books> (Arrays.asList(
+    private static ArrayList<Book> books = new ArrayList<Book> (Arrays.asList(
         new Book("Calculus", "James Stewart", "Math", "images/book-cover.png"),
         new Book("Elementary Algebra", "John Redden", "Math", "images/book-cover.png"),
         new Book("Computer Science", "Suzie ", "Haminghton", "images/book-cover.png")

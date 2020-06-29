@@ -14,7 +14,7 @@
 
 package com.google.sps.data;
 
-import java.util.String;
+import java.lang.String;
 
 public final class Book {
     
