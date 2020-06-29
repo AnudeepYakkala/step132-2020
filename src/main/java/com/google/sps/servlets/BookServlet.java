@@ -30,9 +30,9 @@ import com.google.gson.Gson;
 public class BookServlet extends HttpServlet {
 
     private static ArrayList<Book> books = new ArrayList<Book> (Arrays.asList(
-        new Book("Calculus", "James Stewart", "Math", "images/book-cover.png"),
-        new Book("Elementary Algebra", "John Redden", "Math", "images/book-cover.png"),
-        new Book("Computer Science", "Suzie ", "Haminghton", "images/book-cover.png")
+        new Book("Calculus", "James Stewart", "Math", "/images/book-cover.png"),
+        new Book("Elementary Algebra", "John Redden", "Math", "/images/book-cover.png"),
+        new Book("Computer Science", "Suzie ", "Haminghton", "/images/book-cover.png")
     ));
 
     @Override
