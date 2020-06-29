@@ -14,17 +14,14 @@
 
 /** Lets users switch between the tutors and books tabs. */
 function switchTab(elem) {
+
     var currentActiveTab = document.getElementsByClassName("active")[0];
     var currentActiveContainer = document.getElementsByClassName("active-container")[0];
 
     currentActiveTab.classList.remove("active");
     currentActiveContainer.classList.remove("active-container");
 
-    if(currentActiveContainer.id === "tutors") {
-        document.getElementById("books").classList.add("active-container");
-    } else {
-        document.getElementById("tutors").classList.add("active-container");
-    }
+    document.getElementById(elem.innerText.toLowerCase()).classList.add("active-container");
 
     elem.parentNode.classList.add("active");
 }
@@ -73,12 +70,12 @@ async function getSearchResultsHelper(document, window) {
  */
 async function getBooks(topic) {
     await fetch("/books?topic="+topic).then(response => response.json()).then((results) => {
-        var booksContainer = document.getElementById("books");
+        var books = document.getElementById("books");
 
         var numSearchResults = document.createElement("h4");
         numSearchResults.className = "num-search-results";
 
-        booksContainer.appendChild(numSearchResults);
+        books.appendChild(numSearchResults);
 
         //if there was an error reported by the servlet, display the error message
         if(results.error) {
@@ -87,10 +84,16 @@ async function getBooks(topic) {
         }
 
         numSearchResults.innerText = "Found " + results.length + " books for " + topic;
+        
+        //create container to put books
+        var booksContainer = document.createElement("div");
+        booksContainer.id = "books-container";
 
-        // results.forEach(function(result) {
-        //     tutorContainer.append(createSearchResult(result));
-        // });
+        results.forEach(function(result) {
+            booksContainer.append(createBookResult(result));
+        });
+
+        books.appendChild(booksContainer);
     });
 }
 
@@ -119,6 +122,7 @@ async function getTutors(topic) {
 
 }
 
+/** Creates a div element containing information about a book result. */
 function createBookResult(result) {
     var container = document.createElement("div");
     var thumbnail = document.createElement("img");
@@ -129,7 +133,14 @@ function createBookResult(result) {
     title.innerText = result.title;
     author.innerText = "by " + result.author;
 
+    container.classList.add("book-result");
+    container.classList.add("col-md-4");
+
     container.appendChild(thumbnail);
+    container.appendChild(title);
+    container.appendChild(author);
+
+    return container;
 }
 
 /** Creates a div element containing information about a tutor result. */
@@ -147,7 +158,7 @@ function createTutorResult(result) {
 
     availabilityLink.href = "/availability.html?tutorID=" + result.email;
 
-    container.classList.add("search-result");
+    container.classList.add("tutor-result");
     container.classList.add("list-group-item");
 
     container.appendChild(name);
