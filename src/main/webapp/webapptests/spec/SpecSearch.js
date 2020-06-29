@@ -34,22 +34,22 @@ describe("Search", function() {
         var testResults = ['{"name": "Tutor 1", "email": "tutor1@gmail.com", "skills": ["Math", "History"]}', 
                             '{"name": "Tutor 2", "email": "tutor2@gmail.com", "skills": ["Math", "History"]}'];
 
-        var resultContainer = document.createElement("div");
-        resultContainer.id = "result-container";
+        var tutorContainer = document.createElement("div");
+        tutorContainer.id = "tutors";
 
         var mockWindow = {location: {href: "search-results.html?topic=math", search: "?topic=math"}};
 
-        it("should create result elements inside resultContainer", async function() {
+        it("should create result elements inside tutorContainer", async function() {
             spyOn(window, "fetch").withArgs("/search?topic=math").and.returnValue(Promise.resolve({json: () => Promise.resolve(testResults)}));
 
-            spyOn(document, "getElementById").withArgs("result-container").and.returnValue(resultContainer);
+            spyOn(document, "getElementById").withArgs("tutors").and.returnValue(tutorContainer);
 
             await getSearchResultsHelper(document, mockWindow);
             
             expect(window.fetch).toHaveBeenCalledWith("/search?topic=math");
             //one for the number of results label + 2 for the number of results in testResults
-            expect(resultContainer.childNodes.length).toEqual(3);
-            expect(resultContainer.childNodes[0].innerText).toContain("Found 2 tutors for math");
+            expect(tutorContainer.childNodes.length).toEqual(3);
+            expect(tutorContainer.childNodes[0].innerText).toContain("Found 2 tutors for math");
         });
 
 

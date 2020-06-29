@@ -28,12 +28,26 @@ See the License for the specific language governing permissions and
     display: inline-block;
 }
 
-#num-search-results {
+.num-search-results {
     width: 75%;
     margin: auto;
     margin-bottom: 10px;
 }
 
 #result-container {
+    margin-top: 3%;
+}
+
+#tutors, #books {
+    display:none;
+}
+
+.active-container {
+    display:block !important;;
+}
+
+#tabs {
+    margin: auto;
+    width: 10%;
     margin-top: 3%;
 }
