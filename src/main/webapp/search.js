@@ -60,31 +60,80 @@ async function getSearchResultsHelper(document, window) {
     }
 
     if(topic != null) {
-        await fetch("/search?topic="+topic).then(response => response.json()).then((results) => {
-            var resultContainer = document.getElementById("result-container");
+        var tutors = getTutors(topic);
+        var books = getBooks(topic);
 
-            var numSearchResults = document.createElement("h4");
-            numSearchResults.id = "num-search-results";
-
-            resultContainer.appendChild(numSearchResults);
-
-            //if there was an error reported by the servlet, display the error message
-            if(results.error) {
-                numSearchResults.innerText = results.error;
-                return;
-            }
-
-            numSearchResults.innerText = "Found " + results.length + " tutors for " + topic;
-
-            results.forEach(function(result) {
-                resultContainer.append(createSearchResult(result));
-            });
-        });
+        await tutors;
+        await books;
     }
 }
 
-/** Creates a div element containing information about a search result. */
-function createSearchResult(result) {
+/** Fetches the list of books for the topic the user searched for.
+    To be replaced with Google Books API.
+ */
+async function getBooks(topic) {
+    await fetch("/books?topic="+topic).then(response => response.json()).then((results) => {
+        var booksContainer = document.getElementById("books");
+
+        var numSearchResults = document.createElement("h4");
+        numSearchResults.className = "num-search-results";
+
+        booksContainer.appendChild(numSearchResults);
+
+        //if there was an error reported by the servlet, display the error message
+        if(results.error) {
+            numSearchResults.innerText = results.error;
+            return;
+        }
+
+        numSearchResults.innerText = "Found " + results.length + " books for " + topic;
+
+        // results.forEach(function(result) {
+        //     tutorContainer.append(createSearchResult(result));
+        // });
+    });
+}
+
+/** Fetches the list of tutors for the topic the user searched for. */
+async function getTutors(topic) {
+    await fetch("/search?topic="+topic).then(response => response.json()).then((results) => {
+        var tutorContainer = document.getElementById("tutors");
+
+        var numSearchResults = document.createElement("h4");
+        numSearchResults.className = "num-search-results";
+
+        tutorContainer.appendChild(numSearchResults);
+
+        //if there was an error reported by the servlet, display the error message
+        if(results.error) {
+            numSearchResults.innerText = results.error;
+            return;
+        }
+
+        numSearchResults.innerText = "Found " + results.length + " tutors for " + topic;
+
+        results.forEach(function(result) {
+            tutorContainer.append(createTutorResult(result));
+        });
+    });
+
+}
+
+function createBookResult(result) {
+    var container = document.createElement("div");
+    var thumbnail = document.createElement("img");
+    var title = document.createElement("p");
+    var author = document.createElement("p");
+
+    thumbnail.src = result.thumbnail;
+    title.innerText = result.title;
+    author.innerText = "by " + result.author;
+
+    container.appendChild(thumbnail);
+}
+
+/** Creates a div element containing information about a tutor result. */
+function createTutorResult(result) {
     var container = document.createElement("div");
     var name = document.createElement("h3");
     var email = document.createElement("h6");
