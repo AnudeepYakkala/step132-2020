@@ -23,8 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
-
-
 /** Test servlet that returns a list of books for a searched topic. */
 @WebServlet("/books")
 public class SearchServlet extends HttpServlet {
@@ -51,7 +49,10 @@ public class SearchServlet extends HttpServlet {
         ArrayList<Book> results = getBooksForTopic(topic);
 
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().println(convertListToJson(results));
+
+        String jsonResults = new Gson().toJson(results);
+
+        response.getWriter().println(jsonResults);
        
     }
 
@@ -70,21 +71,4 @@ public class SearchServlet extends HttpServlet {
 
         return results;
     }
-
-    /**
-    * This method converts a list of books to a JSON string.
-    * @return String, the list of books as a JSON string
-    */
-    private String convertListToJson(ArrayList<Book> books) {
-        ArrayList<String> jsonBooks = new ArrayList<String>();
-        Gson gson = new Gson();
-        //convert all Book objects to JSON
-        for(Book b : books) {
-            jsonBooks.add(gson.toJson(b));
-        }
-
-        //convert list to JSON
-        return gson.toJson(jsonBooks);
-    }
-
 }
