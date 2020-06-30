@@ -55,7 +55,6 @@ public class BookServlet extends HttpServlet {
         String jsonResults = new Gson().toJson(results);
 
         response.getWriter().println(jsonResults);
-       
     }
 
     /**
